@@ -12,6 +12,7 @@ export default function Form({setExpense}) {
         setExpense((prev)=>[...prev,data])
 
 
+
         event.target.reset()
     }}>
       <div className="input-container">

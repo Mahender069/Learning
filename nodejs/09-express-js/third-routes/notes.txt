@@ -1,0 +1,236 @@
+Here are **clear, exam-ready notes on Routes in Express.js**, explained simply 👇
+
+---
+
+# 📌 Routes in Express.js
+
+## 1️⃣ What is a Route?
+
+> **A route defines how an application responds to a client request for a specific URL and HTTP method.**
+
+Example:
+
+```js
+app.get("/users", (req, res) => {
+  res.send("Users list");
+});
+```
+
+---
+
+## 2️⃣ Parts of a Route
+
+```js
+app.METHOD(PATH, HANDLER)
+```
+
+* `METHOD` → HTTP method (`GET`, `POST`, `PUT`, `DELETE`)
+* `PATH` → URL path
+* `HANDLER` → function (controller)
+
+---
+
+## 3️⃣ Common HTTP Methods
+
+| Method | Use         |
+| ------ | ----------- |
+| GET    | Read data   |
+| POST   | Create data |
+| PUT    | Update data |
+| DELETE | Delete data |
+
+---
+
+## 4️⃣ Basic Route Examples
+
+```js
+app.get("/", (req, res) => {
+  res.send("Home");
+});
+
+app.post("/login", (req, res) => {
+  res.send("Login success");
+});
+```
+
+---
+
+## 5️⃣ Route Parameters
+
+Used to capture values from URL.
+
+```js
+app.get("/users/:id", (req, res) => {
+  res.send(req.params.id);
+});
+```
+
+Request:
+
+```
+/users/10
+```
+
+---
+
+## 6️⃣ Query Parameters
+
+Data sent after `?`
+
+```js
+app.get("/search", (req, res) => {
+  res.send(req.query);
+});
+```
+
+Request:
+
+```
+/search?name=ram&age=20
+```
+
+---
+
+## 7️⃣ Route-level Middleware
+
+Middleware that runs only for a specific route.
+
+```js
+app.get("/admin", authMiddleware, (req, res) => {
+  res.send("Admin page");
+});
+```
+
+---
+
+## 8️⃣ Express Router (Modular Routes)
+
+Used to organize routes.
+
+### `routes/userRoutes.js`
+
+```js
+const express = require("express");
+const router = express.Router();
+
+router.get("/", (req, res) => {
+  res.send("All users");
+});
+
+module.exports = router;
+```
+
+### `app.js`
+
+```js
+const userRoutes = require("./routes/userRoutes");
+app.use("/users", userRoutes);
+```
+
+---
+
+## 9️⃣ Route Order Matters ⚠️
+
+Express matches routes **top to bottom**.
+
+```js
+app.get("/users/:id", ...)
+app.get("/users/profile", ...) // ❌ unreachable
+```
+
+Correct order:
+
+```js
+app.get("/users/profile", ...)
+app.get("/users/:id", ...)
+```
+
+---
+
+## 🔟 Handling All Methods
+
+```js
+app.all("/test", (req, res) => {
+  res.send("Any method");
+});
+```
+
+---
+
+## 1️⃣1️⃣ Chained Route Handlers
+
+```js
+app.route("/book")
+  .get((req, res) => {})
+  .post((req, res) => {});
+```
+
+---
+
+## 1️⃣2️⃣ 404 Route (Not Found)
+
+```js
+app.use((req, res) => {
+  res.status(404).send("Page not found");
+});
+```
+
+---
+
+## 1️⃣3️⃣ Real-life analogy 🧠
+
+* URL = address
+* HTTP method = action
+* Route = rule for handling it
+
+---
+
+## Final exam-ready summary ✍️
+
+* Routes define request handling
+* Use `app.get`, `app.post`, etc.
+* Can be modular using `Router`
+* Order of routes matters
+
+
+👉 What is dynamic routing?
+
+Dynamic routing means creating routes that accept changing (dynamic) values in the URL.
+
+These values are called route parameters.
+
+Basic example
+app.get("/users/:id", (req, res) => {
+  res.send("User ID: " + req.params.id);
+});
+
+
+Requests:
+
+/users/1
+/users/25
+/users/abc
+
+
+All match the same route.
+
+How it works
+
+:id is a dynamic parameter
+
+Express captures its value
+
+Value is available in req.params
+
+req.params.id
+
+Multiple dynamic parameters
+app.get("/products/:category/:pid", (req, res) => {
+  const { category, pid } = req.params;
+  res.send(category + " " + pid);
+});
+
+
+Request:
+
+/products/mobile/101

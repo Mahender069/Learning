@@ -1,0 +1,10 @@
+1)states are mutable and props are inmutable in general.
+2)we don't the props in the children which are passed from parent.
+3)props can be a simple value(hard coder value) or a state of the parent(In the AppleCounter Component).
+4)states are local to that particular component.
+5)props are controlled by the parent component.
+6)neither props changes or state changes component will re-render.
+
+
+React Fragments
+1)A React Fragment groups multiple elements without adding extra nodes to the DOM. This helps keep the DOM cleaner, improves performance, and avoids unwanted parent elements that could affect styling. You can use Fragments with the short syntax (<>...</>) or the full syntax (<React.Fragment>...</React.Fragment>).

@@ -1,0 +1,13 @@
+react is a client side library and the browser can't understand the node_modules
+
+
+npx -> excute using npm
+
+
+no need to import react manually in script.js it automatically detectes
+
+
+
+npx parcel build index.html --> to minifine the code 
+
+

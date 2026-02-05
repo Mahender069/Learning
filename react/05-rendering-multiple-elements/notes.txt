@@ -1,0 +1,1 @@
+just pass a array to render function to render multiple elements !!!

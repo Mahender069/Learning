@@ -1,0 +1,29 @@
+node js module system allows you to organize your code to mulitple reusable pieces of module
+
+and each file in node js is treated as module
+index.js is root file
+
+common js module system
+module.exports --> similiar to export(to export functionality from module)
+require --> similar to import (to import  functionality to module)
+these are coming from common.js
+
+module wrapper
+in node.js every module is wrapped in a function before it's executed 
+    and this wrapper function is called module wrapper function
+like this 
+(
+    function(exports,require,module,__filename,__dirname){
+        // module code here
+    }
+)
+| Parameter    | Purpose                    |
+| ------------ | -------------------------- |
+| `exports`    | Used to export values      |
+| `require`    | Used to import modules     |
+| `module`     | Metadata about the module  |
+| `__filename` | Absolute path of the file  |
+| `__dirname`  | Directory path of the file |
+
+
+

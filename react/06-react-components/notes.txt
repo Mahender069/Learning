@@ -1,0 +1,31 @@
+so every react object must have some properties
+    $$typeof:Symbol('react-element'),
+    type:'h1',
+    ref:null,
+    props:{}
+
+so react element is a simple object which as properties
+
+
+
+type property isn't limited to html tags it can be also a function and this function is called by the render function (if the type is string(html tag) then the render will a create a tag of that type and add its attributes from props)
+    and if the function has arugments its properties of props
+     so so a react compoenet is a react element whose type is a function and its arugments are in props
+        root.render({
+            $$typeof:Symbol.for('react.transitional.element'),
+            type:Fun,
+            ref:null,
+            props:{
+                name:'Mahender',
+                age:21
+            }
+        });
+
+
+React component is a function which returns a jsx and compoenet is a reusable piece of UI 
+    and one convenient is function name must Start with Captial
+
+        function FunctionName(props){
+            const {}=props;
+        }
+        <FunctionName props />

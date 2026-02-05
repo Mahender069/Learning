@@ -1,0 +1,5 @@
+react only renders a single page
+for multiple pages we use react-router and react-router-dom
+
+
+the only complicated thing was outlet componenet 

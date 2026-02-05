@@ -1,0 +1,161 @@
+In Node.js, the File module usually means the fs (File System) module. It lets you read, write, update, delete, and watch files on your system.
+
+
+Here are **short, exam-ready notes** on the **File Module (`fs`) in Node.js** 📘
+
+---
+
+## File Module in Node.js (`fs`)
+
+### Definition
+
+The **File System (fs) module** in Node.js is used to **work with files and directories** such as reading, writing, updating, deleting, and watching files.
+
+---
+
+## Importing the `fs` Module
+
+### CommonJS
+
+```js
+const fs = require("fs");
+```
+
+### ES Module
+
+```js
+import fs from "fs";
+import fsPromises from "fs/promises";
+```
+
+---
+
+## Types of File Operations
+
+### 1. Asynchronous (Non-Blocking) ✅
+
+* Uses callbacks or promises
+* Does not block execution
+
+```js
+fs.readFile("file.txt", "utf8", callback);
+```
+
+### 2. Synchronous (Blocking) ❌
+
+* Blocks execution until completed
+
+```js
+fs.readFileSync("file.txt", "utf8");
+```
+
+---
+
+## Common File Operations
+
+### Read File
+
+```js
+fs.readFile("a.txt", "utf8", (err, data) => {});
+```
+
+### Write File (Overwrite)
+
+```js
+fs.writeFile("a.txt", "Hello", callback);
+```
+
+### Append File
+
+```js
+fs.appendFile("a.txt", "World", callback);
+```
+
+### Delete File
+
+```js
+fs.unlink("a.txt", callback);
+```
+
+---
+
+## Directory Operations
+
+### Create Folder
+
+```js
+fs.mkdir("folder", callback);
+```
+
+### Read Folder
+
+```js
+fs.readdir("folder", callback);
+```
+
+### Delete Folder
+
+```js
+fs.rmdir("folder", callback);
+```
+
+---
+
+## Checking File Existence
+
+```js
+fs.existsSync("a.txt");
+```
+
+---
+
+## File Streams
+
+Used for handling **large files** efficiently.
+
+```js
+const readStream = fs.createReadStream("input.txt");
+const writeStream = fs.createWriteStream("output.txt");
+readStream.pipe(writeStream);
+```
+
+---
+
+## `fs` vs `fs/promises`
+
+| fs             | fs/promises              |
+| -------------- | ------------------------ |
+| Callback based | Promise based            |
+| Older approach | Modern approach          |
+| Harder to read | Cleaner with async/await |
+
+---
+
+## Advantages
+
+* Built-in Node.js module
+* Efficient file handling
+* Supports async operations
+* Works with streams
+
+---
+
+## Disadvantages
+
+* Sync methods block execution
+* Error handling needed
+
+---
+
+## Use Cases
+
+* File upload/download
+* Logging
+* Reading configuration files
+* Data storage
+
+---
+
+## Conclusion
+
+The **`fs` module** is essential in Node.js for **file and directory management** and is best used with **asynchronous methods**.

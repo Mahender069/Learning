@@ -1,0 +1,4 @@
+here the country router is dynamic --> meaning that if we go to any url it will display /country element
+syntax /:router
+
+

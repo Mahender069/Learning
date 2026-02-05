@@ -1,0 +1,17 @@
+MY NOTES: -
+1) create context using createContext, save it in themecontext. if we'll console it then it is an object. In this object we have Provider value which will be used to provide the values to the components that are wrapped under ThemeContext
+2) To use it, we have useContext() hook.
+3) The value which is passed at the time of context creation, it will be consoled when we'll use the context in other components.
+4) We cannot use useState() in context, useState can only be used in the functional component or in any hook. Here intellisense doesn't shows the error bsc of parcel, it shows error in CRA or vite
+5) Now, we can pass isDark state in the ThemeContext.Provider wrapper and we do not need to pass the separate props for header and outlet component and now useOutletContext becomes obsolete 
+6) Heading over to write a much cleaner code : - we'll make a functional component in context so that we can shift isDark variable to it and then we'll wrap our APP with it so that APP will look cleaner, then from that component we'll return ThemeContext.Provider component
+7) So the flow works like this - we'll create context, then we'll create a functional component, then we'll return provider component from that component which will have value as prop (isDark variable)
+
+What we learnt :
+Avoiding Prop Drilling: Prevents the need to pass props through multiple intermediate components.(Important)
+
+Global State Management through context, prop is being supplied to all the component via one center: Ideal for managing state that needs to be accessed by many components, such as user authentication or theme settings.(Important)
+
+Cleaner Code by shifting all props and state variable to context: Keeps components focused on their specific tasks without concern for prop passing.
+
+Reusability (we do not want unnecessary errors by prop drilling, so we keep component prop area clean) : Facilitates easier reuse of components since they don't need modifications to accept different props.

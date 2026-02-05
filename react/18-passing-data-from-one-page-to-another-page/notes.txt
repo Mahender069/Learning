@@ -1,0 +1,5 @@
+we can data from one page to another page via state
+    In sender page we will set state value
+    In recevier page we can access using useLocation() hook
+
+behind the scenes it uses history API 

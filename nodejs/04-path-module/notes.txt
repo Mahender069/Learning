@@ -1,0 +1,32 @@
+path module provides utitiles for working with file and Directory paths
+
+The path module is a Node.js core module used to handle file and directory paths safely and consistently across operating systems.
+
+methods in path module
+path.join()
+Joins multiple path segments into one safe path and automatically adds the correct path separators.
+Example: path.join('src', 'utils', 'file.js')
+
+path.resolve()
+Converts a sequence of paths into an absolute path starting from the current working directory.
+Example: path.resolve('src', 'app.js')
+
+path.basename()
+Returns only the file name from a given path.
+Example: path.basename('/app/data.json')
+
+path.dirname()
+Returns the directory portion of a path.
+Example: path.dirname('/app/data.json')
+
+path.extname()
+Returns the file extension of a file.
+Example: path.extname('index.html')
+
+path.parse()
+Breaks a path into an object containing root, directory, base, name, and extension.
+Example: path.parse('/app/data.json')
+
+path.normalize()
+Cleans up a path by resolving .., ., and extra slashes.
+Example: path.normalize('/app//src/../file.js')

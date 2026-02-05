@@ -1,0 +1,7 @@
+if we want to strict css to a speific component we can use react module
+
+syntax:
+    created css file as fileName.module.css
+
+    and import it has
+    import styles from './fileName.module.css'

@@ -1,0 +1,25 @@
+A custom hook is just your own Hook that you create to reuse logic.
+
+👉 Think of it like a recipe 🍪
+Instead of cooking the same thing again and again, you write the recipe once and reuse it.
+
+❓ Why do we use Custom Hooks?
+
+We use custom hooks to:
+
+✔️ Reuse logic (state + effects)
+✔️ Avoid copy-paste code
+✔️ Keep components clean & readable
+✔️ Separate logic from UI
+
+⚠️ Rules of Custom Hooks ❗
+
+Must start with use
+
+Can call other hooks
+
+No JSX inside custom hooks
+
+Use them only in components or other hooks
+
+👉 Custom hooks let you reuse React logic across components in a clean way.

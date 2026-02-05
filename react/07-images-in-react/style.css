@@ -1,0 +1,10 @@
+.container{
+    margin-top: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.arrow{
+    width: 100px;
+    height: 100px;
+}

@@ -1,0 +1,9 @@
+these are used to for easy debugging
+we can create by 2 methods:
+    1)in package.json with build add --source-maps
+    2)in configuration files(.babelrc) add(sourceMaps:true)
+
+
+
+The script.js.map can't be seen in networks because devtools required 
+    only pages are shown in the network tab

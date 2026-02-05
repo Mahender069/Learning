@@ -1,0 +1,192 @@
+
+
+## Big Picture
+
+* **Multer** = middleware that **receives uploaded files** in Express
+* **Cloudinary** = **cloud storage** for images/videos, returns URLs
+* Typical flow: **User → Multer → Cloudinary → URL → Database**
+
+---
+
+## Middleware (Express)
+
+* Middleware = checkpoints a request passes through
+* Runs **before** your route handler
+* Can read/modify `req`, or stop the request
+
+---
+
+## Multer Basics
+
+* Multer handles `multipart/form-data` (file uploads)
+* Without Multer, Express **cannot read files**
+* After Multer runs:
+
+  * Single file → `req.file`
+  * Multiple files → `req.files`
+
+---
+
+## Multer Setup
+
+```js
+const multer = require("multer");
+const upload = multer(options);
+```
+
+* `options` = configuration object
+
+### What `multer()` accepts
+
+* `storage` → where/how files are stored (disk or memory)
+* `limits` → file size, count, etc.
+* `fileFilter` → allow/block files by type
+
+---
+
+## storage (Configuration)
+
+* **storage** = rules for file handling
+
+### memoryStorage
+
+* Keeps file in RAM
+* File available as `req.file.buffer`
+* Good for Cloudinary uploads
+
+### diskStorage
+
+* Saves file on server
+* You must create the folder (e.g. `uploads/`)
+
+```js
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
+});
+```
+
+* File path available as `req.file.path`
+
+---
+
+## Error-first Callback (`cb`)
+
+* Pattern: `cb(error, result)`
+* `cb(null, value)` → success, no error
+* `cb(new Error("msg"))` → failure
+
+---
+
+## upload (Configured Multer)
+
+```js
+const upload = multer({ storage });
+```
+
+* Multer **using your storage rules**
+* `upload` is used to create middleware
+
+---
+
+## `.single()`
+
+```js
+upload.single("image")
+```
+
+* Middleware that accepts **ONE file**
+* Field name must match frontend input
+* Result stored in `req.file`
+
+Other methods:
+
+* `.array("images", 5)` → many files, same name
+* `.fields([{ name: "avatar" }, { name: "cover" }])`
+* `.none()` → text only
+
+---
+
+## fieldname
+
+* `fieldname` = name of the input that sent the file
+
+```html
+<input type="file" name="image" />
+```
+
+* Becomes: `req.file.fieldname === "image"`
+
+---
+
+## originalname
+
+* Original filename from user’s computer
+* Example: `cat.png`
+
+---
+
+## mimetype
+
+* Tells **what type of file it is**
+* Examples:
+
+  * `image/jpeg`
+  * `image/png`
+  * `application/pdf`
+* Access via: `req.file.mimetype`
+* Used to allow/block file types
+
+---
+
+## What `req.file` Contains (diskStorage)
+
+* `fieldname`
+* `originalname`
+* `filename`
+* `path`
+* `destination`
+* `mimetype`
+* `size`
+
+---
+
+## Cloudinary Return Data
+
+* Returns more than just a URL
+* Important fields:
+
+  * `secure_url` (HTTPS URL) ✅
+  * `public_id` (used to delete/update)
+  * `format`, `width`, `height`, `bytes`
+
+---
+
+## What to Save in DB (Typical)
+
+* `secure_url`
+* `public_id`
+
+---
+
+## Common Mistakes
+
+* Wrong input `name`
+* Forgetting `multipart/form-data`
+* Expecting files in `req.body`
+* Folder not created for diskStorage
+
+---
+
+## One-line Memory Hooks
+
+* Multer = **catches files**
+* storage = **rules**
+* upload = **configured Multer**
+* `.single()` = **one file**
+* mimetype = **file type label**
+* fieldname = **input name**
+
+//IN THIS WE HAVE ALSO IMPLEMENTED CHANGE PASSWORD AND DELETE AN IMAGE FUNTIONALITY 
+
+AND ALSO SOME PAGINATION AND SORTING

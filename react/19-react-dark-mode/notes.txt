@@ -1,0 +1,16 @@
+we can data from one page to another page via state
+    In sender page we will set state value
+    In recevier page we can access using useLocation() hook
+
+behind the scenes it uses history API 
+
+how we gradually implemented Dark Mode (summary):
+1) implemented Dark mode by just manipulating the DOM and adding dark class to the body tag -  it is temporary
+2) next we created state variable and add and remove dark class on the true or false value of state variable and storing the state variable in localStorage to avoid removal of dark mode on reload - but this is not good way.
+3) To avoid directly manipulating DOM, we headed over to apply dark class on main and header tag and then we saw the use of lifting up state, context prop and useOutletContext() hook.
+4) To avoid prop drilling, we used context prop in outlet and accessed the state variable available in context using useOutletContext() hook.
+5) we fixed the css for countryDetail Component and made header sticky and saw that transform on hover leads to stack context problem even if it hasn't given z-index to appear over.
+
+
+so the value of the outlet context can be accessed by every children where outlet is render
+by using useOutletContext() hook

@@ -1,0 +1,268 @@
+
+---
+
+# 🔹 BACKEND BASICS – REVISION NOTES
+
+---
+
+## 1. What is Backend?
+
+* Backend is the **server-side** part of an application
+* Handles:
+
+  * Business logic
+  * Database operations
+  * Authentication
+  * Request & response handling
+* Communicates with frontend using **HTTP**
+
+---
+
+## 2. Server
+
+* A **server** is a program/computer that:
+
+  * Runs continuously
+  * Receives requests
+  * Sends responses
+* Backend code runs on a server
+
+---
+
+## 3. Port
+
+### Meaning:
+
+* A **port** is a **number (0–65535)** that identifies a **specific application** running on a server
+
+### Why needed:
+
+* One computer → many applications
+* Port tells OS **which app should receive the request**
+
+### Example:
+
+```
+http://localhost:3000
+```
+
+* `localhost` → machine
+* `3000` → backend app
+
+### Important:
+
+* One app = one port
+* Two apps cannot use the same port
+
+---
+
+## 4. Server Listening on a Port
+
+### Meaning:
+
+* Backend app asks OS to **bind a port**
+* OS waits for incoming requests on that port
+* OS forwards requests to the app
+
+### Example:
+
+```js
+app.listen(3000)
+```
+
+### If not listening:
+
+* Client gets **Connection refused**
+
+---
+
+## 5. Route
+
+* A **route** is a **path + HTTP method**
+* Defines **what logic runs** for a request
+
+### Example:
+
+```
+GET /users
+POST /login
+```
+
+### Difference:
+
+* **Port** → selects application
+* **Route** → selects function inside app
+
+---
+
+## 6. HTTP Request
+
+* A **request** is sent from client → server
+
+### Contains:
+
+1. Method (GET, POST, PUT, DELETE)
+2. URL
+3. Headers
+4. Body (optional)
+
+---
+
+## 7. Request Object (`req`)
+
+Represents **incoming client request**
+
+### Important properties:
+
+| Property      | Purpose        |
+| ------------- | -------------- |
+| `req.method`  | HTTP method    |
+| `req.path`    | Route path     |
+| `req.params`  | Route values   |
+| `req.query`   | URL query data |
+| `req.body`    | Client data    |
+| `req.headers` | Metadata       |
+| `req.cookies` | Cookies        |
+| `req.ip`      | Client IP      |
+
+---
+
+## 8. HTTP Response
+
+* A **response** is sent from server → client
+* Contains:
+
+  * Status
+  * Headers
+  * Body
+
+---
+
+## 9. Status Code
+
+### Meaning:
+
+* Numeric code indicating **result of request**
+
+### Common codes:
+
+| Code | Meaning      |
+| ---- | ------------ |
+| 200  | OK           |
+| 201  | Created      |
+| 400  | Bad request  |
+| 401  | Unauthorized |
+| 404  | Not found    |
+| 500  | Server error |
+
+---
+
+## 10. Headers
+
+### Meaning:
+
+* **Metadata** about response
+
+### Examples:
+
+```
+Content-Type: application/json
+Set-Cookie: token=abc
+```
+
+### Purpose:
+
+* Tell client **how to process body**
+
+---
+
+## 11. Response Body
+
+### Meaning:
+
+* **Actual data** sent to client
+
+### Can be:
+
+* JSON (most common)
+* HTML
+* Text
+* File (PDF, image)
+
+### Example:
+
+```json
+{
+  "message": "Success"
+}
+```
+
+---
+
+## 12. `res.end()`
+
+### Meaning:
+
+* **Ends the response**
+* Signals no more data will be sent
+
+### Important:
+
+* Must be called (directly or indirectly)
+* Express methods like `res.send()` call it automatically
+
+---
+
+## 13. Response Object (`res`)
+
+Used to **send data back to client**
+
+### Common methods:
+
+```js
+res.status(200)
+res.set("Content-Type", "application/json")
+res.json({ msg: "OK" })
+res.send("Hello")
+res.end()
+```
+
+---
+
+## 14. Request–Response Flow
+
+```
+Client
+  ↓ request
+Server listening on port
+  ↓
+Route
+  ↓
+Request object (req)
+  ↓
+Backend logic
+  ↓
+Response object (res)
+  ↓ response
+Client
+```
+
+---
+
+## 15. Key Differences (Quick Recall)
+
+### Port vs Route
+
+| Port           | Route            |
+| -------------- | ---------------- |
+| OS level       | App level        |
+| Identifies app | Identifies logic |
+| One per app    | Many per app     |
+
+### Request vs Response
+
+| Request         | Response        |
+| --------------- | --------------- |
+| Client → Server | Server → Client |
+| Input           | Output          |
+| `req`           | `res`           |

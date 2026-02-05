@@ -1,0 +1,194 @@
+Here are **clean, exam-/revision-friendly notes** for the concepts we discussed 👇
+(Simple language, short points)
+
+---
+
+# 📘 Express.js Middleware & `app.use()` — Notes
+
+---
+
+## 🔹 What is Middleware?
+
+* Middleware is **code that runs between request and response**
+* It executes **before route handlers**
+* It can:
+
+  * Allow request
+  * Modify request/response
+  * Block request
+
+### Definition:
+
+> Middleware is a function that has access to `req`, `res`, and `next`
+
+---
+
+## 🔹 Middleware Function Syntax
+
+```js
+(req, res, next) => {
+  // logic
+  next();
+}
+```
+
+### Parameters:
+
+* `req` → request object
+* `res` → response object
+* `next()` → passes control to next middleware/route
+
+⚠️ If `next()` is not called and no response is sent → request hangs
+
+---
+
+## 🔹 Types of Middleware
+
+1. **Application-level middleware**
+2. **Route-level middleware**
+3. **Built-in middleware**
+4. **Error-handling middleware**
+
+---
+
+## 🔹 Common Uses of Middleware
+
+* Authentication & Authorization 🔐
+* Logging requests 📝
+* Parsing request body
+* Validation
+* Error handling
+
+---
+
+## 🔹 Creating Custom Middleware (Example)
+
+```js
+function logger(req, res, next) {
+  console.log(req.url);
+  next();
+}
+```
+
+---
+
+## 🔹 What is `app.use()`?
+
+> `app.use()` is used to **register middleware** in Express.
+
+* Runs for **every HTTP method**
+* Runs for **every request** (unless path is specified)
+
+---
+
+## 🔹 Basic Syntax of `app.use()`
+
+```js
+app.use(middleware);
+```
+
+or
+
+```js
+app.use("/path", middleware);
+```
+
+---
+
+## 🔹 `app.use()` Examples
+
+### Runs for all requests
+
+```js
+app.use((req, res, next) => {
+  console.log("Request received");
+  next();
+});
+```
+
+### Runs only for `/api` routes
+
+```js
+app.use("/api", middleware);
+```
+
+---
+
+## 🔹 Built-in Middleware Examples
+
+```js
+app.use(express.json());              // parse JSON body
+app.use(express.urlencoded({ extended: true })); // parse form data
+app.use(express.static("public"));    // serve static files
+```
+
+---
+
+## 🔹 Route vs `app.use()`
+
+| Feature      | `app.use()`  | `app.get()`    |
+| ------------ | ------------ | -------------- |
+| HTTP methods | ALL          | GET only       |
+| Purpose      | Middleware   | Route handling |
+| Path match   | Prefix-based | Exact match    |
+
+---
+
+## 🔹 Applying Middleware to a Route
+
+```js
+app.get("/profile", authMiddleware, (req, res) => {
+  res.send("Profile page");
+});
+```
+
+---
+
+## 🔹 Middleware Execution Order
+
+* Middleware runs **top to bottom**
+* Order matters ⚠️
+
+```js
+app.use(m1);
+app.use(m2);
+```
+
+➡ `m1` runs before `m2`
+
+---
+
+## 🔹 Error-handling Middleware
+
+* Has **4 parameters**
+
+```js
+function errorHandler(err, req, res, next) {
+  res.status(500).send("Error occurred");
+}
+```
+
+* Must be defined **after routes**
+
+```js
+app.use(errorHandler);
+```
+
+---
+
+## 🔹 Important Rules to Remember 🧠
+
+✔ Middleware runs in order
+✔ Call `next()` to continue
+✔ Send response OR call `next()`
+✔ Error middleware goes last
+✔ `app.use()` runs for all HTTP methods
+
+---
+
+## 🔹 One-Line Summaries
+
+* **Middleware** → Request checkpoint
+* **`next()`** → Move forward
+* **`app.use()`** → Register middleware globally or by path
+

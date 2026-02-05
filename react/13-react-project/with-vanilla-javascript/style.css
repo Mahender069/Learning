@@ -1,0 +1,85 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+:root{
+    --bg-color:white;
+    --text-color:black;
+    --card-color:rgb(255, 255, 255);
+    --header-color:white;
+}
+body.dark{
+    --bg-color:rgb(43, 55, 67);
+    --text-color:white;
+    --card-color:rgba(138, 129, 129, 0.929);
+    --header-color:rgb(23, 34, 46);
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+#header{
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    padding: 2rem;
+    font-size: xx-large;
+    position: sticky;
+
+    background-color: var(--header-color);
+    color: var(--text-color);
+
+}
+.icon img{
+    height: 40px;
+}
+.icon{
+    cursor: pointer;
+}
+#main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    column-gap: 50px;
+    padding: 50px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+.outerDiv{
+    width: 400px;
+    height: 450px;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid black;
+    box-shadow: 0 0 10px black ;
+}
+.innerDiv2 p{
+    font-size: x-large;
+}
+.innerDiv2{
+    margin: 2rem;
+}
+
+.country-name{
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.flag-image{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}

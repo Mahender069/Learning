@@ -1,0 +1,4 @@
+
+use Promise.all to handle to multiple fetch requests
+
+syntax is kinda complicated

@@ -1,0 +1,14 @@
+npm is default package manager for node js
+
+package manager allows to install and manage packages in project and 
+    so manage dependencies and also run scripts that are defined in package.json
+
+    package.json manages dependencies and devdependencies  (metadata about the project) and it's json file
+
+    devdependencies --> are required for development and testing
+    dependencies --> are required for application in production
+
+    
+
+
+

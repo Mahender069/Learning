@@ -1,0 +1,146 @@
+Here are **short, exam-/interview-friendly revision notes** on **Callbacks, Promises, and Async/Await** 👇
+
+---
+
+## 🔹 Asynchronous Programming (Quick Recall)
+
+* Used for **non-blocking operations**
+* Examples: API calls, file I/O, timers
+* Improves performance and responsiveness
+
+---
+
+## 1️⃣ Callbacks
+
+**Definition**
+
+* A function passed as an argument
+* Executed **after** an async task completes
+
+**Syntax**
+
+```js
+function task(callback) {
+  callback();
+}
+```
+
+**Pros**
+
+* Simple concept
+* Works in older JS
+
+**Cons**
+
+* Callback Hell (nested code)
+* Hard error handling
+* Poor readability
+
+**Keyword**
+
+* `callback()`
+
+---
+
+## 2️⃣ Promises
+
+**Definition**
+
+* Object representing a value available **now, later, or never**
+
+**States**
+
+* Pending
+* Fulfilled (`resolve`)
+* Rejected (`reject`)
+
+**Syntax**
+
+```js
+promise.then().catch();
+```
+
+**Pros**
+
+* Better readability than callbacks
+* Chainable
+* Centralized error handling
+
+**Cons**
+
+* Still slightly verbose
+
+**Keywords**
+
+* `new Promise`
+* `.then()`
+* `.catch()`
+* `.finally()`
+
+---
+
+## 3️⃣ Async / Await
+
+**Definition**
+
+* Modern way to handle promises
+* Makes async code look synchronous
+
+**Rules**
+
+* `await` works only inside `async` functions
+* Built on top of promises
+
+**Syntax**
+
+```js
+async function func() {
+  const data = await promise;
+}
+```
+
+**Pros**
+
+* Clean and readable
+* Easy debugging
+* Best practice today
+
+**Cons**
+
+* Needs modern JS support
+
+**Keywords**
+
+* `async`
+* `await`
+* `try...catch`
+
+---
+
+## 🔄 Comparison (One Look)
+
+| Feature        | Callback | Promise | Async/Await |
+| -------------- | -------- | ------- | ----------- |
+| Readability    | Low      | Medium  | High        |
+| Error handling | Weak     | Good    | Best        |
+| Nesting        | Deep     | Flat    | Flat        |
+| Modern use     | ❌        | ✅       | ⭐ Best      |
+
+---
+
+## 🧠 Interview Tips
+
+* Async/Await = **Promises + cleaner syntax**
+* Callback Hell = reason Promises were introduced
+* `async` function **always returns a Promise**
+* Use `try/catch` with async/await
+
+---
+
+## 📌 One-line Summary
+
+* **Callback** → old, nested
+* **Promise** → structured async handling
+* **Async/Await** → clean, modern, preferred
+
+If you want, I can convert this into **PDF notes**, **handwritten-style notes**, or **Tamil + English (Tanglish) notes** for easy revision 😊

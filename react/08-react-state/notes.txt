@@ -1,0 +1,52 @@
+React only render the element which has changed not whole document (it is done by virtual dom)
+
+state is variable which automatically re-render when variable changes
+
+
+react hook is a special function that let use react features like state,lifecycle,context
+    ex-> useState,useContext
+
+
+useState is used to manage state in a function componenet(basically it remembers the value and re-render 
+the values when updated)
+    useState(variable) --> returns a array[variable,function] 
+        variable is value of the variable 
+        function is updaterFunction which re-renders when values changes    
+
+        and can be only used in inside function componenet
+
+
+useState remembers the value using closure concept in javascript
+
+and only node value changes (react compares the previous value and current value to update)
+
+
+to use state we use useState hook 
+    const [variable,setVariable]=useState(initialValue);
+
+Summary:
+Behind the Scenes of useState()
+
+1) State Initialization:
+
+When you call useState with an initial state value, React sets up an internal state for the component.
+useState returns an array with two elements: the current state and a function to update that state.
+
+2) State Storage:
+
+React maintains a list of states for each component instance. This list is tied to the component's lifecycle.
+When the component renders, React ensures the correct state values are retrieved from this list.
+
+3) State Update:
+
+When you call the state updater function (e.g., setState), React schedules a re-render of the component.
+The state updater function enqueues an update to the state value.
+During the re-render, React processes this queue, updates the state, and triggers a new render with the updated state.
+
+4) Render Cycle:
+
+Every time the component renders, the useState calls are processed in the same order. This order is crucial because it allows React to match the current state to the corresponding state call.
+React uses an internal index to keep track of useState calls. This index is reset on each render, ensuring that state updates and reads align correctly.
+
+Previous state:
+Using the previous state with useState is practical in scenarios where state updates depend on the current state value. It ensures state updates are accurate and consistent

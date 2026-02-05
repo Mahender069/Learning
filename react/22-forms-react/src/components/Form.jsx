@@ -1,34 +1,32 @@
-export default function Form({setData}) {
+export default function Form({setExpense}) {
   return (
-    <div className="expense-tracker">
-      <form className="expense-form" onSubmit={(e)=>{
-        e.preventDefault();
-        const dt=new FormData(document.querySelector('.expense-form'))
+    <form className="expense-form" onSubmit={(event)=>{
+        event.preventDefault();
+        const formData=new FormData(document.querySelector('.expense-form'));
         const data={
-            title:dt.get('title'),
-            category:dt.get('category'),
-            amount:dt.get('amount')
+            title:formData.get('title'),
+            category:formData.get('category'),
+            amount:formData.get('amount')
         }
-        setData((prevState)=>[...prevState,data]);
-      }}>
-        <div className="input-container">
-          <label htmlFor="title">Title</label>
-          <input id="title" name="title" />
-        </div>
-        <div className="input-container">
-          <label htmlFor="category">Category</label>
-          <input id="category" name="category" />
-        </div>
-        <div className="input-container">
-          <label htmlFor="amount">Amount</label>
-          <input id="amount" name="amount" />
-        </div>
-        <button className="add-btn">Add</button>
-      </form>
-      <div className="context-menu">
-        <div>Edit</div>
-        <div>Delete</div>
+
+        setExpense((prev)=>[...prev,data])
+
+
+        event.target.reset()
+    }}>
+      <div className="input-container">
+        <label htmlFor="title">Title</label>
+        <input id="title"  name="title"/>
       </div>
-    </div>
+      <div className="input-container">
+        <label htmlFor="category">Category</label>
+        <input id="category" name="category"/>
+      </div>
+      <div className="input-container">
+        <label htmlFor="amount">Amount</label>
+        <input id="amount" name="amount"/>
+      </div>
+      <button className="add-btn">Add</button>
+    </form>
   );
 }

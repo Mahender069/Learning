@@ -1,5 +1,5 @@
-export default function Table({data}) {
-  console.log(data);
+export default function Table({ expense }) {
+    console.log(expense);
   return (
     <table className="expense-table">
       <thead>
@@ -41,17 +41,20 @@ export default function Table({data}) {
         </tr>
       </thead>
       <tbody>
-        {
-          data.map(({title,category,amount})=>{
-            return (
-                <tr key={crypto.randomUUID()}>
-                  <th>{title}</th>
-                  <th>{category}</th>
-                  <th>₹{amount}</th>
-                </tr>
-            )
-          })
-        }
+        <tr>
+          <td>Milk</td>
+          <td>Grocery</td>
+          <td>₹40</td>
+        </tr>
+        {expense.map(({ title, category, amount }) => {
+          return (
+            <tr key={crypto.randomUUID()}>
+              <td>{title}</td>
+              <td>{category}</td>
+              <td>₹{amount}</td>
+            </tr>
+          );
+        })}
         <tr>
           <th>Total</th>
           <th></th>

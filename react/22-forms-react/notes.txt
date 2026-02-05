@@ -6,4 +6,3 @@ Key highlights of this lecture:
 5) form data is extracted using FormData constructor, we pass our form which is e.target. so what formData does is - it makes an object of all data that we submit and then we make our own object by iterating over formData using formData.entries() to create the object of the html form's fields and values we fill and then we set that object to the setExpense. we use spread operator here to keep the previousData table field as it is.
 6) name attribute is necessary in input to populate the FormData constructor 
 7) we'll discuss more better way for extracting form in the next video
-

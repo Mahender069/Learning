@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 export default function CountriesList(props) {
   const { query } = props;
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
 
-  useEffect(()=>{
-    fetch('https://restcountries.com/v3.1/independent')
-    .then(data => data.json())
-    .then(data => setData(data))
-  },[])
+  useEffect(() => {
+    fetch("https://restcountries.com/v3.1/independent")
+      .then((data) => data.json())
+      .then((data) => setData(data));
+  }, []);
   return (
     <>
       {data

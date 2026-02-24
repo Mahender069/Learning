@@ -7,7 +7,7 @@ export default function CountryDetails() {
   console.log(params);
 
 
-  const urlObj = new URLSearchParams(window.location.search);
+  // const urlObj = new URLSearchParams(window.location.search);
   const name = params.country;
   const [countryData, setCountryData] = useState(null);
   const [notFound,useNotFound]=useState(false);

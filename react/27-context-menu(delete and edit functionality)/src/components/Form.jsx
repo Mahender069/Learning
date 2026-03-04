@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-function Form({ dataHandler }) {
-  const [data, setData] = useState({ title: "", category: "", amount: "" });
+function Form({ dataHandler, setter ,editor}) {
+  const [data, setData] = setter;
   const [error, setError] = useState({});
+  const [edit,setEdit]=editor;
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -49,6 +50,7 @@ function Form({ dataHandler }) {
         event.preventDefault();
         const result = Object.keys(validateForm(data));
         if (result.length) return;
+        data.id = crypto.randomUUID();
         dataHandler((prev) => [...prev, data]);
         setData({ title: "", category: "", amount: "" });
       }}
@@ -77,7 +79,7 @@ function Form({ dataHandler }) {
         error={error.amount}
       />
       <button className="add-btn" type="submit">
-        Add
+        {edit ? 'Save' : 'Add'}
       </button>
     </form>
   );

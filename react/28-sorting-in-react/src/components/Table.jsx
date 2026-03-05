@@ -1,10 +1,21 @@
 import { useState } from "react";
-import { useFilter } from "../hooks/useFilter";
 import ContextMenu from "./ContextMenu";
-export default function Table({ expense, setExpense, setInput, editor,rows }) {
-  const [filteredData, setData] = useFilter(expense, (data) => data.category);
+export default function Table({
+  expense,
+  setExpense,
+  setInput,
+  setEditing,
+  rowId,
+  setRowId,
+}) {
+  const [category, setCategory] = useState("");
   const [property, setProperty] = useState({});
-  const [rowId, setRowId] = rows;
+  const [sortCallback, setSortCallback] = useState(() => () => {});
+
+  const filteredData = expense.filter((item) => {
+    return item.category === category || category === "";
+  });
+  console.log(sortCallback);
   return (
     <>
       <ContextMenu
@@ -14,21 +25,16 @@ export default function Table({ expense, setExpense, setInput, editor,rows }) {
         setExpense={setExpense}
         setInput={setInput}
         expense={expense}
-        editor={editor}
+        setEditing={setEditing}
       />
-      <table
-        className="expense-table"
-        onClick={() => {
-          setProperty({});
-        }}
-      >
+      <table className="expense-table" onClick={() => setProperty({})}>
         <thead>
           <tr>
             <th>Title</th>
             <th>
               <select
                 onChange={(event) => {
-                  setData(event.target.value);
+                  setCategory(event.target.value);
                 }}
               >
                 <option value="">All</option>
@@ -43,6 +49,9 @@ export default function Table({ expense, setExpense, setInput, editor,rows }) {
               <div>
                 <span>Amount</span>
                 <svg
+                  onClick={() => {
+                    setSortCallback(() => (a, b) => b.price - a.price);
+                  }}
                   xmlns="http://www.w3.org/2000/svg"
                   width="10"
                   viewBox="0 0 384 512"
@@ -52,6 +61,9 @@ export default function Table({ expense, setExpense, setInput, editor,rows }) {
                   <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" />
                 </svg>
                 <svg
+                  onClick={() => {
+                    setSortCallback(() => (a, b) => a.price - b.price);
+                  }}
                   xmlns="http://www.w3.org/2000/svg"
                   width="10"
                   viewBox="0 0 384 512"
@@ -65,32 +77,42 @@ export default function Table({ expense, setExpense, setInput, editor,rows }) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map(({ id, title, category, amount }) => {
-            return (
-              <tr
-                key={id}
-                onContextMenu={(event) => {
-                  event.preventDefault();
-                  setRowId(id);
-                  setProperty({
-                    left: event.clientX + 4 + "px",
-                    top: event.clientY + 4 + "px",
-                  });
-                }}
-              >
-                <td>{title}</td>
-                <td>{category}</td>
-                <td>₹{amount}</td>
-              </tr>
-            );
-          })}
+          {filteredData
+            .sort(sortCallback)
+            .map(({ id, title, category, price }) => {
+              return (
+                <tr
+                  key={id}
+                  onContextMenu={(event) => {
+                    event.preventDefault();
+                    setRowId(id);
+                    setProperty({
+                      left: event.clientX + "px",
+                      top: event.clientY + "px",
+                    });
+                  }}
+                >
+                  <td>{title}</td>
+                  <td>{category}</td>
+                  <td>₹{price}</td>
+                </tr>
+              );
+            })}
           <tr>
             <th>Total</th>
-            <th></th>
+            <th
+              className="clear-sort"
+              onClick={() => {
+                setSortCallback(() => () => {});
+                console.log("hello world");
+              }}
+            >
+              Clear Sort
+            </th>
             <th>
               ₹
-              {filteredData.reduce((sum, value) => {
-                return sum + parseInt(value.amount);
+              {filteredData.reduce((sum, { price }) => {
+                return sum + parseInt(price);
               }, 0)}
             </th>
           </tr>

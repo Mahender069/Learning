@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-function Form({ dataHandler, setter ,editor}) {
+function Form({ dataHandler, setter ,editor,rows,expense}) {
   const [data, setData] = setter;
   const [error, setError] = useState({});
   const [edit,setEdit]=editor;
+  const [rowId,setRowId]=rows;
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -48,6 +49,16 @@ function Form({ dataHandler, setter ,editor}) {
       className="expense-form"
       onSubmit={(event) => {
         event.preventDefault();
+        if(edit){
+          setEdit(false);
+          const found=expense.findIndex((item)=>{
+            return item.id==rowId
+          })
+          expense[found]={...data,id:rowId}
+          setData((prev)=>prev)
+          setData({ title: "", category: "", amount: "" });
+          return;
+        }
         const result = Object.keys(validateForm(data));
         if (result.length) return;
         data.id = crypto.randomUUID();

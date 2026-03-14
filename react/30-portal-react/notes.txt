@@ -1,0 +1,135 @@
+In **React**, a **Portal** lets you render a component **outside the normal DOM hierarchy of its parent component** while still keeping it part of the React component tree.
+
+It’s commonly used for things like:
+
+* Modals
+* Tooltips
+* Popups
+* Dropdowns that must escape CSS overflow or z-index issues
+
+---
+
+## 1️⃣ Why React Portal is Needed
+
+Normally React renders components **inside their parent DOM node**.
+
+But sometimes you want a component to appear somewhere else in the DOM, like:
+
+```html
+<body>
+  <div id="root"></div>
+  <div id="modal-root"></div>
+</body>
+```
+
+You may want a modal component to render inside **#modal-root** instead of **#root**.
+
+---
+
+## 2️⃣ Syntax
+
+React provides a method:
+
+```javascript
+ReactDOM.createPortal(child, container)
+```
+
+* **child** → JSX to render
+* **container** → DOM element where it should render
+
+---
+
+## 3️⃣ Simple Example
+
+### index.html
+
+```html
+<div id="root"></div>
+<div id="portal-root"></div>
+```
+
+---
+
+### Modal Component
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+
+function Modal({ children }) {
+  return ReactDOM.createPortal(
+    <div className="modal">
+      {children}
+    </div>,
+    document.getElementById("portal-root")
+  );
+}
+
+export default Modal;
+```
+
+---
+
+### App Component
+
+```javascript
+import React from "react";
+import Modal from "./Modal";
+
+function App() {
+  return (
+    <div>
+      <h1>Main App</h1>
+
+      <Modal>
+        <p>This is inside portal</p>
+      </Modal>
+    </div>
+  );
+}
+
+export default App;
+```
+
+---
+
+## 4️⃣ DOM Result
+
+Even though `Modal` is used inside `App`, the HTML will be:
+
+```html
+<div id="root">
+  <h1>Main App</h1>
+</div>
+
+<div id="portal-root">
+  <div class="modal">
+    <p>This is inside portal</p>
+  </div>
+</div>
+```
+
+---
+
+## 5️⃣ Important Points
+
+✔ Portal **does not break React tree**
+✔ Events still **bubble up to parent components**
+✔ Useful for **modals, overlays, notifications**
+
+---
+
+✅ **Real-world usage examples**
+
+* Modal dialogs
+* Floating dropdowns
+* Toast notifications
+* Tooltips
+
+---
+
+If you want, I can also show:
+
+* **React Portal Modal project example (interview-ready)**
+* **React Portal with Hooks + TypeScript**
+* **Portal vs Normal Rendering (interview question)**.

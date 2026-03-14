@@ -111,7 +111,8 @@ export default function Table({
             </th>
             <th>
               ₹
-              {filteredData.reduce((sum, { price }) => {
+              {filteredData
+                .reduce((sum, { price }) => {
                 return sum + parseInt(price);
               }, 0)}
             </th>

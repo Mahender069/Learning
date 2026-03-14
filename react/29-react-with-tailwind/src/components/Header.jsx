@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import vite from "../../public/vite.svg";
 
-export default function Header() {
+export default function Header({clickHandler}) {
   return (
     <header className="flex justify-between p-5 shadow-md">
       <img src={vite} alt="Vite Logo" />
@@ -35,6 +35,11 @@ export default function Header() {
           >
             Contact
           </NavLink>
+        </li>
+        <li>
+          <button className="bg-sky-500 p-1 rounded-md cursor-pointer" onClick={()=>{
+            clickHandler(true)
+          }}>Sign in</button>
         </li>
       </ul>
     </header>

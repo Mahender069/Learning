@@ -3,6 +3,7 @@ import "./App.css";
 import Form from "./components/Form";
 import Table from "./components/Table";
 import x from "./data";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 export default function App() {
   const [data, setData] = useState(x);
   const [input, setInput] = useState({
@@ -12,9 +13,21 @@ export default function App() {
   });
   const [editing, setEditing] = useState(false);
   const [rowId, setRowId] = useState("");
+  const [localData, setLocalData] = useLocalStorage("num", [1, 2, 3]);
+
+  console.log(localData, setLocalData);
   return (
     <main>
-      <h1>Track Your Expense</h1>
+      <h1
+        onClick={() => {
+          setLocalData([5, 6, 7]);
+        }}
+      >
+        Track Your Expense
+        {
+          localData.join(',')
+        }
+      </h1>
       <div className="expense-tracker">
         <Form
           expense={data}

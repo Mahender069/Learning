@@ -1,0 +1,157 @@
+In **React**, **Code Splitting** and **Lazy Loading** are performance optimization techniques used to **reduce the initial bundle size** and **load components only when needed**.
+
+---
+
+# 1️⃣ Code Splitting in React
+
+**Code Splitting** means **breaking your JavaScript bundle into smaller chunks** that can be loaded separately.
+
+Normally, when a React app builds, tools like **Webpack** bundle everything into **one large JS file**.
+
+Problem:
+
+* Large bundle size
+* Slow initial page load
+
+Code splitting solves this by **loading only the code required for the current page**.
+
+### Example Scenario
+
+Suppose your app has:
+
+* Home Page
+* Dashboard
+* Settings
+* Admin Panel
+
+Without code splitting:
+
+```
+bundle.js (all pages)
+```
+
+With code splitting:
+
+```
+home.chunk.js
+dashboard.chunk.js
+settings.chunk.js
+admin.chunk.js
+```
+
+Each file loads **only when that page is visited**.
+
+---
+
+# 2️⃣ Lazy Loading in React
+
+**Lazy Loading** is the **implementation of code splitting** where components are loaded **only when they are needed**.
+
+React provides:
+
+* `React.lazy()`
+* `Suspense`
+
+---
+
+# 3️⃣ Example of Lazy Loading
+
+### Without Lazy Loading
+
+```javascript
+import Dashboard from "./Dashboard";
+```
+
+This loads the component **immediately**.
+
+---
+
+### With Lazy Loading
+
+```javascript
+import React, { Suspense, lazy } from "react";
+
+const Dashboard = lazy(() => import("./Dashboard"));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+
+export default App;
+```
+
+### How it works
+
+1. `lazy()` loads the component **only when rendered**
+2. `Suspense` shows a **loading fallback UI**
+
+---
+
+# 4️⃣ Real-World Example (Route Lazy Loading)
+
+Often used with **React Router**.
+
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
+const Home = lazy(() => import("./Home"));
+const Dashboard = lazy(() => import("./Dashboard"));
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
+```
+
+Now:
+
+* Home loads first
+* Dashboard loads **only when the user navigates to it**
+
+---
+
+# 5️⃣ Benefits
+
+✅ Faster initial load
+✅ Smaller bundle size
+✅ Better performance
+✅ Improved user experience
+✅ Efficient network usage
+
+---
+
+# 6️⃣ Code Splitting vs Lazy Loading
+
+| Feature | Code Splitting                  | Lazy Loading                |
+| ------- | ------------------------------- | --------------------------- |
+| Purpose | Split bundle into smaller files | Load components when needed |
+| Level   | Build optimization              | Runtime loading             |
+| Tool    | Bundlers like Webpack           | React.lazy + Suspense       |
+| Result  | Multiple JS chunks              | Dynamic component loading   |
+
+---
+
+✅ **Simple interview answer:**
+
+> Code Splitting splits the JavaScript bundle into smaller chunks, and Lazy Loading loads those chunks only when they are required using `React.lazy()` and `Suspense`.
+
+---
+
+If you'd like, I can also explain:
+
+* **Dynamic imports in React**
+* **React Suspense in depth**
+* **Code splitting optimization for large React apps (very common interview question)**.

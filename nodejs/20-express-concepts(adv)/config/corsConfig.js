@@ -15,7 +15,7 @@ const configCors = () => {
     allowedHeaders: ["Content-Type", "Authorization", "Accept-Version"],
     credentials:true,
     maxAge:600,
-    preflightContinue:true --> notes in notes.txt
+    preflightContinue:true //--> notes in notes.txt
   });
 };
 

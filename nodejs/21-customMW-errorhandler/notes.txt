@@ -1,0 +1,352 @@
+# Express Error Handling – Step‑by‑Step Notes
+
+## 1. Goal of Error Handling in Express
+
+In backend APIs we want:
+
+* Controllers to stay clean
+* Errors to be handled in one place
+* Consistent API responses
+
+So we use:
+
+1. Global Error Handler
+2. Custom Error Class
+3. asyncHandler wrapper
+
+---
+
+# 2. Express Middleware Basics
+
+Express processes middleware in order (top → bottom).
+
+Flow:
+
+Client Request
+↓
+Route
+↓
+Controller
+↓
+Response
+
+If an error occurs the flow changes.
+
+Client Request
+↓
+Route
+↓
+Controller
+↓
+next(error)
+↓
+Error Middleware
+↓
+Response
+
+---
+
+# 3. What next() Does
+
+next() tells Express to move to the next middleware.
+
+Example:
+
+next()
+
+Meaning:
+
+continue to next middleware
+
+If we pass an error:
+
+next(error)
+
+Express behavior:
+
+1. Skip all normal middleware
+2. Look for error middleware
+
+Error middleware is identified by:
+
+(err, req, res, next)
+
+---
+
+# 4. Global Error Handler
+
+A global error handler is middleware that catches all errors.
+
+Example:
+
+app.use((err, req, res, next) => {
+res.status(err.statusCode || 500).json({
+success: false,
+message: err.message
+})
+})
+
+Important rule:
+
+The global error handler MUST be registered last.
+
+Reason:
+Express executes middleware in order.
+
+---
+
+# 5. Problem With Async Controllers
+
+Example async controller:
+
+async (req, res, next) => {
+const user = await User.findById(id)
+res.json(user)
+}
+
+If an error happens inside await:
+
+Express does NOT automatically catch it.
+
+Result:
+
+Unhandled Promise Rejection
+
+So normally we write:
+
+try {
+await something
+} catch (err) {
+next(err)
+}
+
+But writing try/catch in every controller becomes repetitive.
+
+---
+
+# 6. asyncHandler Purpose
+
+asyncHandler is a wrapper function that automatically catches async errors.
+
+Implementation:
+
+const asyncHandler = (fn) => {
+return (req, res, next) => {
+Promise.resolve(fn(req, res, next)).catch(next)
+}
+}
+
+Key idea:
+
+Run the controller
+↓
+If promise fails
+↓
+.catch(next)
+↓
+next(error)
+
+---
+
+# 7. What fn Means
+
+In asyncHandler:
+
+const asyncHandler = (fn) => {}
+
+fn is the controller function.
+
+Example usage:
+
+router.get("/user", asyncHandler(getUser))
+
+So:
+
+fn = getUser controller
+
+---
+
+# 8. Why asyncHandler Returns a Function
+
+Express expects route handlers like this:
+
+(req, res, next)
+
+So asyncHandler returns a function that Express can execute.
+
+Structure:
+
+asyncHandler(controller)
+↓
+returns
+↓
+(req, res, next) => {}
+
+---
+
+# 9. Breaking Down the Core Line
+
+Promise.resolve(fn(req, res, next)).catch(next)
+
+Step by step:
+
+1. Execute controller
+
+fn(req, res, next)
+
+2. Convert result to a promise
+
+Promise.resolve()
+
+3. If the promise fails
+
+.catch(next)
+
+Meaning:
+
+.catch((error) => next(error))
+
+---
+
+# 10. What Happens When Error Occurs
+
+Controller throws error
+↓
+Promise rejects
+↓
+.catch(next)
+↓
+next(error)
+↓
+Express error pipeline
+↓
+Global error handler
+
+---
+
+# 11. Controller Example
+
+exports.getUser = asyncHandler(async (req, res) => {
+
+const user = await User.findById(req.params.id)
+
+if (!user) {
+throw new Error("User not found")
+}
+
+res.json(user)
+
+})
+
+Notice:
+
+No try/catch needed.
+
+---
+
+# 12. Complete Request Flow
+
+Client Request
+↓
+Route
+↓
+asyncHandler wrapper
+↓
+Controller runs
+↓
+Error occurs
+↓
+.catch(next)
+↓
+next(error)
+↓
+Express error middleware
+↓
+Global error handler
+↓
+JSON response
+
+---
+
+# 13. Custom Error Class
+
+Sometimes we want structured errors.
+
+Example:
+
+class ApiError extends Error {
+constructor(message, statusCode) {
+super(message)
+this.statusCode = statusCode
+
+```
+Error.captureStackTrace(this, this.constructor)
+```
+
+}
+}
+
+Usage:
+
+throw new ApiError("User not found", 404)
+
+Benefits:
+
+* attach status codes
+* cleaner controllers
+* consistent error responses
+
+---
+
+# 14. Error.captureStackTrace
+
+Purpose:
+
+Creates a stack trace for the custom error.
+
+Stack trace shows where the error happened.
+
+Example output:
+
+Error: User not found
+at getUser (userController.js:12)
+
+It removes the constructor from the stack so debugging is cleaner.
+
+---
+
+# 15. Final Mental Model
+
+Controller
+↓
+asyncHandler (error catcher)
+↓
+next(error)
+↓
+Express router
+↓
+Global error middleware
+↓
+Response sent
+
+Important clarification:
+
+asyncHandler does NOT directly call the global error handler.
+
+It calls:
+
+next(error)
+
+Express then routes the error to the global error middleware.
+
+---
+
+# 16. Why This Pattern Is Used
+
+Advantages:
+
+• No try/catch in controllers
+• Centralized error handling
+• Clean controller logic
+• Consistent API responses
+• Scalable for large backend projects

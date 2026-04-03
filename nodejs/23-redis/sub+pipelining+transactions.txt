@@ -1,0 +1,238 @@
+Here are clean Markdown (.md) notes for Pub/Sub, Pipelining, and Transactions in Redis, including examples with Node.js.
+
+Redis Notes: Pub/Sub, Pipelining, and Transactions
+# Redis Notes: Pub/Sub, Pipelining, and Transactions
+
+## 1. Redis Pub/Sub
+
+### Definition
+Pub/Sub (Publish–Subscribe) is a messaging pattern where:
+
+- **Publisher** sends messages
+- **Subscriber** listens for messages
+- **Channel** acts as the communication medium
+
+Messages published to a channel are delivered to all subscribers.
+
+Redis Pub/Sub is used for real-time messaging systems.
+
+---
+
+## Key Components
+
+| Component | Description |
+|----------|-------------|
+| Publisher | Sends message to a channel |
+| Subscriber | Listens for messages |
+| Channel | Named communication path |
+
+---
+
+## Redis Commands
+
+| Command | Description |
+|--------|-------------|
+| PUBLISH channel message | Send message to channel |
+| SUBSCRIBE channel | Listen to channel |
+| UNSUBSCRIBE channel | Stop listening |
+
+---
+
+## Example
+
+Publisher:
+
+
+PUBLISH chat "Hello World"
+
+
+Subscriber:
+
+
+SUBSCRIBE chat
+
+
+Output:
+
+
+Hello World
+
+
+---
+
+## Node.js Example
+
+Install Redis client:
+
+
+npm install redis
+
+
+### Subscriber
+
+```javascript
+const redis = require("redis");
+
+const subscriber = redis.createClient();
+
+await subscriber.connect();
+
+await subscriber.subscribe("chat", (message) => {
+  console.log("Received:", message);
+});
+Publisher
+const redis = require("redis");
+
+const publisher = redis.createClient();
+
+await publisher.connect();
+
+await publisher.publish("chat", "Hello from Redis");
+Pub/Sub Flow
+
+Publisher → Channel → Subscriber
+
+Example:
+
+User A sends message → Redis channel → All subscribers receive message.
+
+Important Notes
+Pub/Sub messages are not stored
+If subscriber is offline, message is lost
+Used for real-time systems
+Common Use Cases
+Chat systems
+Notifications
+Event-driven microservices
+Live dashboards
+2. Redis Pipelining
+Definition
+
+Pipelining allows a client to send multiple commands to Redis without waiting for individual responses.
+
+This reduces network round-trip time.
+
+Redis still executes commands sequentially.
+
+Normal Execution
+Client → Command → Wait → Response
+Client → Next command
+Pipelined Execution
+Client → Send multiple commands
+Redis → Execute sequentially
+Redis → Send responses together
+Example
+
+Without pipelining:
+
+SET a 1
+SET b 2
+SET c 3
+
+Each command waits for a response.
+
+With pipelining:
+
+Commands are sent together.
+
+SET a 1
+SET b 2
+SET c 3
+
+Network latency is reduced.
+
+Node.js Example
+const redis = require("redis");
+
+const client = redis.createClient();
+
+await client.connect();
+
+await Promise.all([
+  client.set("a", 1),
+  client.set("b", 2),
+  client.set("c", 3)
+]);
+
+Commands are sent concurrently.
+
+Use Cases
+Bulk data insertion
+Cache updates
+High throughput systems
+Key Points
+Improves performance
+Reduces network calls
+Does NOT provide atomicity
+3. Redis Transactions
+Definition
+
+Redis transactions allow multiple commands to execute as a single grouped operation.
+
+Commands are queued and executed together.
+
+Transaction Commands
+Command	Description
+MULTI	Start transaction
+EXEC	Execute queued commands
+DISCARD	Cancel transaction
+WATCH	Monitor keys for changes
+Example
+MULTI
+SET balance 100
+INCR balance
+EXEC
+
+Result:
+
+balance = 101
+Node.js Example
+const redis = require("redis");
+
+const client = redis.createClient();
+
+await client.connect();
+
+const tx = client.multi();
+
+tx.set("x", 10);
+tx.incr("x");
+
+const result = await tx.exec();
+
+console.log(result);
+Transaction Workflow
+MULTI starts transaction
+Commands are queued
+EXEC executes all commands
+Important Characteristics
+Commands execute sequentially
+No other client's commands run between them
+Not full rollback like SQL transactions
+Use Cases
+Banking operations
+Inventory updates
+Atomic updates
+Pipelining vs Transactions
+Feature	Pipelining	Transaction
+Purpose	Performance	Data consistency
+Execution	Normal sequential	Grouped execution
+Redis commands	None	MULTI / EXEC
+Atomicity	No	Partial
+Interleaving	Possible	Not possible
+Simple Rule
+
+Pipelining → Performance optimization
+
+Transactions → Consistency control
+
+
+---
+
+If you want, I can also give you **one more Redis notes section that backend developers usually add**, covering:
+
+- **Redis Persistence (RDB vs AOF)**
+- **Redis Caching Patterns**
+- **Redis Streams**
+
+These are **very commonly asked in backend interviews**.

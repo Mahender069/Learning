@@ -1,0 +1,315 @@
+Here are **clean interview-ready notes** from our full discussion (Node.js API concepts). You can **revise quickly before interviews or exams**.
+
+---
+
+# 📘 Node.js API Concepts – Quick Notes
+
+## 1️⃣ Versioning in Node.js
+
+Versioning means **managing different versions of software, APIs, or packages so updates do not break existing applications**.
+
+### Types of Versioning
+
+1. **Node.js Runtime Version**
+
+   * Example: `v18`, `v20`, `v22`
+
+2. **Package Versioning (Semantic Versioning)**
+
+Format:
+
+```
+MAJOR.MINOR.PATCH
+```
+
+Example:
+
+```
+1.4.2
+```
+
+Meaning:
+
+| Version | Purpose          |
+| ------- | ---------------- |
+| MAJOR   | Breaking changes |
+| MINOR   | New features     |
+| PATCH   | Bug fixes        |
+
+Example in `package.json`:
+
+```json
+"express": "^4.18.2"
+```
+
+Framework example: Express.js
+
+---
+
+# 2️⃣ API Versioning
+
+API versioning means **creating multiple versions of an API so old applications continue working when new features are added**.
+
+Example:
+
+```
+/api/v1/users
+/api/v2/users
+```
+
+Benefits:
+
+* Backward compatibility
+* Safe updates
+* Easy maintenance
+
+---
+
+# 3️⃣ API Versioning Methods
+
+## 1. URL Versioning (Most common)
+
+Version inside URL.
+
+Example:
+
+```
+/api/v1/users
+/api/v2/users
+```
+
+Express example:
+
+```javascript
+app.get("/api/v1/users",(req,res)=>{
+ res.json(["Alice","Bob"])
+})
+
+app.get("/api/v2/users",(req,res)=>{
+ res.json([{name:"Alice"},{name:"Bob"}])
+})
+```
+
+---
+
+## 2. Query Parameter Versioning
+
+Version in query string.
+
+Example:
+
+```
+/api/users?version=1
+/api/users?version=2
+```
+
+Example code:
+
+```javascript
+app.get("/api/users",(req,res)=>{
+ const version=req.query.version
+})
+```
+
+---
+
+## 3. Header Versioning
+
+Version passed in request header.
+
+Example:
+
+```
+API-Version: 1
+```
+
+Code:
+
+```javascript
+const version=req.headers["api-version"]
+```
+
+---
+
+## 4. Accept Header Versioning (Content Negotiation)
+
+Example header:
+
+```
+Accept: application/vnd.myapi.v1+json
+```
+
+Used in advanced REST APIs.
+
+---
+
+# 4️⃣ URL Versioning with Middleware
+
+URL example:
+
+```
+/api/v1/users
+/api/v2/users
+```
+
+Middleware extracts version from URL.
+
+Example:
+
+```javascript
+function versionMiddleware(req,res,next){
+ const version=req.params.version
+
+ if(!["v1","v2"].includes(version)){
+   return res.status(400).json({message:"Invalid version"})
+ }
+
+ req.apiVersion=version
+ next()
+}
+```
+
+Route:
+
+```javascript
+app.get("/api/:version/users",versionMiddleware,(req,res)=>{
+ if(req.apiVersion==="v1"){
+   res.json(["Alice","Bob"])
+ }
+})
+```
+
+Purpose:
+
+* Validate version
+* Keep controllers clean
+* Avoid repeated logic
+
+---
+
+# 5️⃣ Rate Limiting
+
+Rate limiting restricts **how many requests a user can send within a time period**.
+
+Common middleware:
+express-rate-limit
+
+Purpose:
+
+* Prevent brute-force attacks
+* Prevent DDoS
+* Protect server resources
+
+Install:
+
+```bash
+npm install express-rate-limit
+```
+
+Example:
+
+```javascript
+const rateLimit=require("express-rate-limit")
+
+const limiter=rateLimit({
+ windowMs:15*60*1000,
+ max:100
+})
+
+app.use(limiter)
+```
+
+Meaning:
+
+| Setting  | Purpose          |
+| -------- | ---------------- |
+| windowMs | Time window      |
+| max      | Maximum requests |
+
+Example:
+
+```
+100 requests per 15 minutes
+```
+
+---
+
+# 6️⃣ Rate Limit Headers
+
+Rate-limit middleware can send headers to show API limits.
+
+---
+
+## standardHeaders
+
+Modern HTTP standard headers.
+
+Example:
+
+```
+RateLimit-Limit: 100
+RateLimit-Remaining: 99
+RateLimit-Reset: 900
+```
+
+Meaning:
+
+| Header              | Purpose            |
+| ------------------- | ------------------ |
+| RateLimit-Limit     | Max requests       |
+| RateLimit-Remaining | Remaining requests |
+| RateLimit-Reset     | Reset time         |
+
+---
+
+## legacyHeaders
+
+Old header format.
+
+Example:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 99
+X-RateLimit-Reset: 1690000000
+```
+
+Used for older systems.
+
+---
+
+# 7️⃣ Recommended Configuration
+
+Most modern APIs use:
+
+```javascript
+standardHeaders:true
+legacyHeaders:false
+```
+
+---
+
+# 🎯 Interview One-Line Answers
+
+**Versioning**
+
+> Managing different versions of software or APIs to maintain compatibility.
+
+**API Versioning**
+
+> Creating multiple API versions so updates do not break existing clients.
+
+**Rate Limiting**
+
+> Restricting the number of API requests a client can make in a specific time period.
+
+**standardHeaders**
+
+> Sends modern HTTP rate-limit headers.
+
+**legacyHeaders**
+
+> Sends older `X-RateLimit-*` headers.
+
+---
+
